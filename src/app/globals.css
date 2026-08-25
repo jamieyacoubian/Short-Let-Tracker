@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+:root {
+  /* Warm ivory ground */
+  --color-ivory: #faf6ee;
+  --color-ivory-soft: #f2ecdd;
+  --color-paper: #fffdf8;
+
+  /* Deep forest green — brand / primary */
+  --color-forest-950: #0e1f16;
+  --color-forest-900: #16301f;
+  --color-forest-800: #1e3f29;
+  --color-forest-700: #2a5136;
+  --color-forest-600: #386846;
+  --color-forest-500: #4a7d57;
+
+  /* Muted terracotta — accent */
+  --color-terracotta-700: #9a4a2c;
+  --color-terracotta-600: #b25a35;
+  --color-terracotta-500: #c1703f;
+  --color-terracotta-100: #f3e3d6;
+
+  /* Soft sage — status */
+  --color-sage-700: #4f6b52;
+  --color-sage-500: #7fa07f;
+  --color-sage-200: #dbe7d8;
+  --color-sage-100: #eaf1e7;
+
+  /* Amber for follow-ups / warnings */
+  --color-amber-600: #a8722f;
+  --color-amber-100: #f6e9d3;
+
+  /* Clay for ruled-out / negative */
+  --color-clay-600: #a1493f;
+  --color-clay-100: #f4e0dc;
+
+  /* Slate ink for text */
+  --color-ink-900: #24261f;
+  --color-ink-700: #454737;
+  --color-ink-500: #6b6d5b;
+  --color-ink-300: #9a977e;
+
+  --color-border-soft: #e6ddc7;
+  --color-border-strong: #d8cba8;
+
+  --background: var(--color-ivory);
+  --foreground: var(--color-ink-900);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-ivory: var(--color-ivory);
+  --color-ivory-soft: var(--color-ivory-soft);
+  --color-paper: var(--color-paper);
+
+  --color-forest-950: var(--color-forest-950);
+  --color-forest-900: var(--color-forest-900);
+  --color-forest-800: var(--color-forest-800);
+  --color-forest-700: var(--color-forest-700);
+  --color-forest-600: var(--color-forest-600);
+  --color-forest-500: var(--color-forest-500);
+
+  --color-terracotta-700: var(--color-terracotta-700);
+  --color-terracotta-600: var(--color-terracotta-600);
+  --color-terracotta-500: var(--color-terracotta-500);
+  --color-terracotta-100: var(--color-terracotta-100);
+
+  --color-sage-700: var(--color-sage-700);
+  --color-sage-500: var(--color-sage-500);
+  --color-sage-200: var(--color-sage-200);
+  --color-sage-100: var(--color-sage-100);
+
+  --color-amber-600: var(--color-amber-600);
+  --color-amber-100: var(--color-amber-100);
+
+  --color-clay-600: var(--color-clay-600);
+  --color-clay-100: var(--color-clay-100);
+
+  --color-ink-900: var(--color-ink-900);
+  --color-ink-700: var(--color-ink-700);
+  --color-ink-500: var(--color-ink-500);
+  --color-ink-300: var(--color-ink-300);
+
+  --color-border-soft: var(--color-border-soft);
+  --color-border-strong: var(--color-border-strong);
+
+  --font-serif: var(--font-fraunces);
+  --font-sans: var(--font-sans);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-sage-200);
+  color: var(--color-forest-900);
+}
+
+.font-serif-display {
+  font-family: var(--font-serif);
+  font-feature-settings: "ss01" 1;
+}
+
+/* Custom, calm scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-strong) transparent;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

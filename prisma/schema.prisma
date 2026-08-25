@@ -1,0 +1,464 @@
+// London Rental Command Centre — Prisma schema
+// Mirrors the tabs of the Google Sheet "Jamie & Margaret — London Rental CRM":
+// Property Pipeline, Contact Log, Drafts, Agents & Sources, Archive & Leads.
+// The sheet remains the source of truth; this database is the app's local
+// mirror, kept in sync via the Google Sheets integration adapter.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// --- Auth -------------------------------------------------------------
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  name         String?
+  image        String?
+  passwordHash String? // only used for the local-dev credentials fallback
+  createdAt    DateTime  @default(now())
+  sessions     Session[]
+  accounts     Account[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// --- Reference data -----------------------------------------------------
+
+model Agent {
+  id          String            @id @default(cuid())
+  name        String
+  branch      String?
+  agency      String?
+  phone       String?
+  email       String?
+  website     String?
+  notes       String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  properties  Property[]
+  contactLogs ContactLogEntry[]
+}
+
+/// Read-only reference list mirroring the "Agents & Sources" watchlist tab —
+/// portals and agencies to keep searching, not tied to a single property.
+model Source {
+  id                  String   @id @default(cuid())
+  name                String
+  type                String? // "Portal" | "Agency" | ...
+  coverage            String?
+  shortLetStrength    String?
+  billsLikelihood     String?
+  contactBranch       String?
+  searchUrl           String?
+  onBriefingWatchlist Boolean  @default(false)
+  lastSearchedNote    String?
+  notes               String?
+  createdAt           DateTime @default(now())
+}
+
+/// Mirrors the "Archive & Leads" tab — properties kept only for memory and
+/// duplicate prevention; nothing here is safe to contact without a fresh check.
+model ArchiveLead {
+  id            String    @id @default(cuid())
+  sheetRowId    String?   @unique
+  label         String
+  area          String?
+  priceMonthly  Float?
+  billsNote     String?
+  reasonStatus  String?
+  notes         String?
+  nextAction    String?
+  lastCheckedAt DateTime?
+  sourceRow     String?
+  createdAt     DateTime  @default(now())
+}
+
+// --- Property Pipeline ----------------------------------------------------
+
+enum PropertyStatus {
+  NEW
+  READY_TO_ENQUIRE
+  ENQUIRY_SENT
+  AWAITING_REPLY
+  ACTIVE_CONVERSATION
+  VIEWING_ARRANGED
+  STRONG_CONTENDER
+  FOLLOW_UP_DUE
+  HOLD
+  UNAVAILABLE
+  RULED_OUT
+  LET_AGREED
+  DUPLICATE
+}
+
+enum RankTier {
+  TOP_PICK
+  STRONG_CONTENDER
+  WORTH_CONSIDERING
+  CONDITIONAL
+  HOLD_VERIFY
+  RULED_OUT
+}
+
+enum Tristate {
+  YES
+  NO
+  UNKNOWN
+}
+
+model Property {
+  id             String  @id @default(cuid())
+  // identity / provenance
+  sheetRowId     String? @unique // row key back in the "Property Pipeline" tab
+  reference      String? // portal / agent reference number
+  address        String
+  development    String?
+  postcode       String?
+  neighbourhood  String?
+  zone           String?
+  listingUrl     String?
+  additionalUrls String? // JSON string array of other portal URLs for the same listing
+  latitude       Float?
+  longitude      Float?
+
+  // commercial facts
+  priceMonthly    Float?
+  priceWeekly     Float?
+  billsIncluded   Tristate @default(UNKNOWN)
+  billsNotes      String?
+  councilTaxNotes String?
+  wifiIncluded    Tristate @default(UNKNOWN)
+  deposit         String?
+  paymentBasis    String?
+
+  // physical facts
+  bedrooms     Int?
+  bathrooms    Int?
+  squareFeet   Int?
+  furnished    String? // "Furnished" | "Unfurnished" | "Part-furnished" | null=not stated
+  floor        String?
+  hasLift      Tristate @default(UNKNOWN)
+  parking      String?
+  outdoorSpace String?
+  broadband    String?
+
+  // availability / term
+  availableFrom     String?
+  availableUntil    String?
+  minTermMonths     Int?
+  minTermNote       String?
+  maxTermMonths     Int?
+  maxTermNote       String?
+  shortLetConfirmed Tristate @default(UNKNOWN)
+
+  // raw pipeline notes that don't have a clean structured home yet
+  listingStatusNote String? // e.g. "Live when last checked", "Rightmove URL removed"
+  fitStatusNote     String? // e.g. "Meets core brief", "Fails budget/term as currently marketed"
+
+  // status / ranking
+  status        PropertyStatus @default(NEW)
+  rankTier      RankTier?
+  rankScore     Int? // 0-100, drives ordering within a tier
+  nextAction    String?
+  nextActionDue DateTime?
+  wfhSuitable   Tristate       @default(UNKNOWN)
+
+  // evaluation (structured fields -> dashboard narrative is generated from these)
+  whyItWorks          String?
+  watchOuts           String?
+  wfhAssessment       String?
+  layoutAssessment    String?
+  quietnessAssessment String?
+  valueAssessment     String?
+  verdict             String?
+
+  ratingCafes     Int? // 1=Poor 2=Fair 3=Good 4=Excellent
+  ratingCalm      Int?
+  ratingGreenery  Int?
+  ratingEvening   Int?
+  ratingCulture   Int?
+  ratingTransport Int?
+  ratingLateNight Int?
+  ratingWfh       Int?
+
+  lastVerifiedAt DateTime?
+  isDuplicateOf  String?
+  duplicateNotes String?
+  privateNotes   String? // never shown alongside shareable facts without explicit toggle
+
+  /**
+   * Verbatim original CRM row, keyed by sheet column header — full-fidelity fallback the UI can reveal on request.
+   */
+  sourceRow String?
+
+  agentId String?
+  agent   Agent?  @relation(fields: [agentId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  images         PropertyImage[]
+  contactLogs    ContactLogEntry[]
+  drafts         Draft[]
+  viewings       Viewing[]
+  auditLogs      AuditLogEntry[]
+  transportLinks TransportLink[]
+}
+
+enum ImageCategory {
+  LIVING_ROOM
+  KITCHEN
+  MAIN_BEDROOM
+  SECOND_BEDROOM
+  BATHROOM
+  OUTDOOR
+  FLOORPLAN
+  EXTERIOR
+  OTHER
+}
+
+enum ImageVerificationStatus {
+  VERIFIED
+  UNVERIFIED
+  ILLUSTRATIVE // seed / placeholder imagery, clearly not a real listing photo
+}
+
+model PropertyImage {
+  id                 String                  @id @default(cuid())
+  propertyId         String
+  property           Property                @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  url                String
+  listingUrl         String?
+  propertyReference  String?
+  category           ImageCategory
+  sortOrder          Int                     @default(0)
+  retrievedAt        DateTime                @default(now())
+  verificationStatus ImageVerificationStatus @default(UNVERIFIED)
+  altText            String?
+}
+
+// --- Contact Log ----------------------------------------------------------
+
+enum ContactDirection {
+  OUTBOUND
+  INBOUND
+}
+
+enum ContactChannel {
+  EMAIL
+  PORTAL_FORM
+  PHONE
+  WHATSAPP
+  SMS
+  IN_PERSON
+  OTHER
+}
+
+enum ContactEventType {
+  ENQUIRY_SENT
+  AUTOMATED_ACKNOWLEDGEMENT
+  AGENT_REPLY
+  JAMIE_REPLY
+  PHONE_CALL
+  WHATSAPP_EXCHANGE
+  FOLLOW_UP
+  VIEWING_BOOKED
+  VIEWING_COMPLETED
+  OUTCOME
+}
+
+enum MatchConfidence {
+  CONFIRMED
+  POSSIBLE_PORTAL_MATCH
+  FOUND_NOT_CONTACTED
+  POSSIBLE_DUPLICATE
+  ACTIVE_THREAD
+}
+
+model ContactLogEntry {
+  id            String    @id @default(cuid())
+  // Optional: some log rows are general market/search notes not tied to one
+  // property (e.g. "Chestertons search / all options").
+  propertyId    String?
+  property      Property? @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  propertyLabel String? // raw "Property" text from the sheet, kept even when linked
+  agentId       String?
+  agent         Agent?    @relation(fields: [agentId], references: [id])
+
+  occurredAt      DateTime
+  direction       ContactDirection
+  channel         ContactChannel
+  eventType       ContactEventType
+  sender          String?
+  recipient       String?
+  subject         String?
+  summary         String?
+  isSubstantive   Boolean          @default(true)
+  gmailThreadId   String?
+  gmailMessageUrl String?
+  matchConfidence MatchConfidence  @default(CONFIRMED)
+  nextAction      String?
+  sourceRow       String?
+
+  createdAt DateTime @default(now())
+}
+
+// --- Drafts -----------------------------------------------------------
+
+enum DraftStatus {
+  READY_NOT_SENT
+  SENT
+  HELD
+  SUPERSEDED
+  NEEDS_JAMIE_ANSWER
+}
+
+enum DraftChannel {
+  EMAIL
+  PORTAL_FORM
+}
+
+model Draft {
+  id                 String       @id @default(cuid())
+  sheetRowId         String?      @unique
+  propertyId         String
+  property           Property     @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  agentName          String?
+  channel            DraftChannel
+  subject            String?
+  body               String
+  status             DraftStatus  @default(READY_NOT_SENT)
+  questionsCovered   String?
+  duplicateCheckNote String?
+  notes              String?
+  sourceRow          String?
+  preparedAt         DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+}
+
+// --- Viewings -----------------------------------------------------------
+
+enum ViewingStatus {
+  PROPOSED
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+enum ViewingDecision {
+  PENDING
+  PURSUE
+  HOLD
+  REJECT
+}
+
+model Viewing {
+  id              String          @id @default(cuid())
+  propertyId      String
+  property        Property        @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  status          ViewingStatus   @default(PROPOSED)
+  startAt         DateTime?
+  endAt           DateTime?
+  proposedTimes   String? // JSON array of ISO strings, when status = PROPOSED with options
+  calendarEventId String? // Google Calendar event id, when synced from "Marmie"
+  questionsToAsk  String?
+  notesAfter      String?
+  decision        ViewingDecision @default(PENDING)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  media           ViewingMedia[]
+}
+
+model ViewingMedia {
+  id        String   @id @default(cuid())
+  viewingId String
+  viewing   Viewing  @relation(fields: [viewingId], references: [id], onDelete: Cascade)
+  url       String
+  kind      String // "photo" | "video"
+  caption   String?
+  createdAt DateTime @default(now())
+}
+
+// --- Transport / lifestyle -------------------------------------------------
+
+enum TransportMode {
+  WALK
+  TUBE
+  OVERGROUND
+  DLR
+  NATIONAL_RAIL
+  BUS
+}
+
+model TransportLink {
+  id          String        @id @default(cuid())
+  propertyId  String
+  property    Property      @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  destination String
+  mode        TransportMode
+  minMinutes  Int
+  maxMinutes  Int
+  notes       String?
+  sortOrder   Int           @default(0)
+}
+
+// --- Audit log --------------------------------------------------------
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  STATUS_CHANGE
+  SYNC_IMPORT
+  SYNC_EXPORT
+  SYNC_ERROR
+}
+
+model AuditLogEntry {
+  id         String      @id @default(cuid())
+  propertyId String?
+  property   Property?   @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  action     AuditAction
+  entity     String // e.g. "Property", "ContactLogEntry", "SheetsSync"
+  summary    String
+  detail     String? // JSON blob with before/after where relevant
+  actor      String      @default("system")
+  createdAt  DateTime    @default(now())
+}
