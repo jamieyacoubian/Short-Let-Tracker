@@ -5,7 +5,13 @@
 // mirror, kept in sync via the Google Sheets integration adapter.
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  // Some hosting platforms (Railway included) build in one image and run in
+  // a different, leaner one — if that runtime image's OpenSSL differs from
+  // the build image's, a client generated with only "native" fails at
+  // runtime with a query-engine-not-found error even though the build
+  // succeeded. Ship engines for the common Debian/musl runtime variants too.
+  binaryTargets = ["native", "debian-openssl-3.0.x", "debian-openssl-1.1.x", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
