@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "node scripts/start.mjs",
+    "start": "prisma db push --accept-data-loss --skip-generate && tsx prisma/seed-if-empty.ts && next start",
     "lint": "eslint",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -14,7 +14,7 @@
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
     "postinstall": "prisma generate",
-    "vercel-build": "node scripts/prepare-postgres-schema.mjs && prisma generate --schema=prisma/schema.production.prisma && prisma db push --schema=prisma/schema.production.prisma --accept-data-loss --skip-generate && tsx prisma/seed-if-empty.ts && next build"
+    "vercel-build": "next build"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

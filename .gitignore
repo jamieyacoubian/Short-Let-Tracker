@@ -45,7 +45,6 @@ next-env.d.ts
 *.db
 *.db-journal
 prisma/dev.db
-prisma/schema.production.prisma
 
 # test artifacts
 /test-results
