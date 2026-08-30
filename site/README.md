@@ -24,8 +24,10 @@ compiled.
 
 - Replace `jamieyacoubian.com` in `index.html` (the canonical link, Open
   Graph tags and the structured-data script) with the real domain.
-- Re-check the fee range (`#fees` section) and the "2–4 weeks" turnaround
-  claim — both were provided as approximate and may need adjusting.
+- Sanity-check the three fee-schedule figures (`#fees` section — currently
+  £1,950 / £3,450 / £5,250) and each tier's turnaround estimate against
+  real engagements once a few have run. They were modelled against a
+  monthly revenue target, not billed history — see chat for the maths.
 - Update the LinkedIn/email links if either ever changes.
 
 ## Files

@@ -22,7 +22,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="styles.css">
 
@@ -82,7 +82,7 @@
     <nav class="main-nav" id="mainNav" aria-label="Primary">
       <a href="#services">Services</a>
       <a href="#situations">Situations</a>
-      <a href="#fees">Fees &amp; timeline</a>
+      <a href="#fees">Fee schedule</a>
       <a href="#about">About</a>
       <a class="cta" href="#contact">Discuss your plans</a>
     </nav>
@@ -96,7 +96,7 @@
     <div class="container">
       <div class="hero-copy">
         <span class="hero-eyebrow">Commercial and financial preparation for founder-led businesses</span>
-        <h1>Prepare the business, not just the numbers.</h1>
+        <h1>Prepare <span class="ink-mark">the business<svg viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true"><path d="M4 12C60 4 240 4 296 13" /></svg></span>, not just the numbers.</h1>
         <p class="hero-lede">I work for and alongside founders preparing for investment, bank financing or a business sale, bringing commercial acumen and financial understanding to the story, evidence and decisions behind the numbers.</p>
         <div class="hero-ctas">
           <a class="cta" href="mailto:jamieyacoubian@gmail.com?subject=Confidential%20transaction%20preparation%20enquiry">Book a confidential conversation</a>
@@ -104,8 +104,11 @@
         </div>
         <p class="hero-credibility">Discreet, candid and practical. Founder-aligned, with nothing hidden.</p>
       </div>
-      <div class="hero-portrait-frame">
-        <img src="assets/portrait.jpg" srcset="assets/portrait-540.jpg 540w, assets/portrait.jpg 900w" sizes="(max-width: 860px) 240px, 340px" width="900" height="1015" alt="Jamie Yacoubian, due diligence preparation adviser" fetchpriority="high">
+      <div class="hero-portrait-block">
+        <div class="hero-portrait-frame">
+          <img src="assets/portrait.jpg" srcset="assets/portrait-540.jpg 540w, assets/portrait.jpg 900w" sizes="(max-width: 860px) 230px, 320px" width="900" height="1015" alt="Jamie Yacoubian, due diligence preparation adviser" fetchpriority="high">
+        </div>
+        <span class="hero-portrait-caption"><b>Exhibit A</b> — J. Yacoubian</span>
       </div>
     </div>
   </section>
@@ -132,7 +135,7 @@
   <section id="services">
     <div class="container">
       <div class="section-head">
-        <span class="kicker">How I help</span>
+        <span class="kicker exhibit">How I help</span>
         <h2>Clear information. A credible story. A prepared team.</h2>
         <p>The work starts with what already exists — the strengths of the business and the information already on file. From there I align the commercial story with the financial evidence, and set out plainly what still needs explaining, gathering or reconciling before someone outside the business asks.</p>
       </div>
@@ -142,7 +145,7 @@
           <span class="card-eyebrow">Diagnostic</span>
           <h3>Business and financial diagnostic</h3>
           <p class="card-intro">A balanced review of the business, its financial information and the commercial story that connects them.</p>
-          <ul>
+          <ul class="ledger-list">
             <li>Strengths and value drivers</li>
             <li>Likely diligence questions</li>
             <li>Evidence and explanation requirements</li>
@@ -155,7 +158,7 @@
           <span class="card-eyebrow">Financial pack</span>
           <h3>Evidence-ready financial pack</h3>
           <p class="card-intro">Clear, reconciled analysis connecting the numbers to how the business actually operates.</p>
-          <ul>
+          <ul class="ledger-list">
             <li>Sustainable earnings and cash conversion</li>
             <li>Monthly trading performance</li>
             <li>Revenue, customers and concentration</li>
@@ -170,7 +173,7 @@
           <span class="card-eyebrow">Transaction support</span>
           <h3>Transaction preparation and support</h3>
           <p class="card-intro">Hands-on support building the materials and the answers, before and during the process.</p>
-          <ul>
+          <ul class="ledger-list">
             <li>Data-room structure and document map</li>
             <li>Evidence tracker</li>
             <li>A question database, built for your management team to complete with answers and supporting evidence</li>
@@ -187,10 +190,10 @@
   </section>
 
   <!-- Situations -->
-  <section id="situations" class="section-ivory">
+  <section id="situations" class="section-band">
     <div class="container">
       <div class="section-head">
-        <span class="kicker">Situations</span>
+        <span class="kicker exhibit">Situations</span>
         <h2>One business. Three different conversations.</h2>
         <p>The foundations stay the same — clear information, sound analysis and credible explanations — but the emphasis changes depending on who is making the decision.</p>
       </div>
@@ -201,7 +204,7 @@
           <p>Helping you communicate the commercial and financial case for growth.</p>
           <div>
             <span class="situation-focus-label">Focus</span>
-            <ul>
+            <ul class="ledger-list">
               <li>Growth quality</li>
               <li>Customer economics</li>
               <li>KPI consistency</li>
@@ -213,7 +216,7 @@
           </div>
           <div>
             <span class="situation-output-label">Typical outputs</span>
-            <ul>
+            <ul class="ledger-list">
               <li>Investor-ready financial pack</li>
               <li>KPI and forecast analysis</li>
               <li>Evidence register</li>
@@ -227,7 +230,7 @@
           <p>Presenting a clear view of cash generation, resilience and repayment capacity — refinancing is one example among several.</p>
           <div>
             <span class="situation-focus-label">Focus</span>
-            <ul>
+            <ul class="ledger-list">
               <li>Historic performance</li>
               <li>Cash flow</li>
               <li>Working capital</li>
@@ -239,7 +242,7 @@
           </div>
           <div>
             <span class="situation-output-label">Typical outputs</span>
-            <ul>
+            <ul class="ledger-list">
               <li>Lender-ready financing pack</li>
               <li>Cash-flow and debt-service analysis</li>
               <li>Supporting schedules</li>
@@ -253,7 +256,7 @@
           <p>Helping a prospective buyer understand the quality of the business and its earnings, while preparing management for formal diligence.</p>
           <div>
             <span class="situation-focus-label">Focus</span>
-            <ul>
+            <ul class="ledger-list">
               <li>Sustainable EBITDA</li>
               <li>Revenue and customer quality</li>
               <li>Normal adjustments</li>
@@ -265,7 +268,7 @@
           </div>
           <div>
             <span class="situation-output-label">Typical outputs</span>
-            <ul>
+            <ul class="ledger-list">
               <li>Sale-readiness analysis</li>
               <li>Earnings, net-debt and working-capital schedules</li>
               <li>Data-room map</li>
@@ -279,39 +282,77 @@
     </div>
   </section>
 
-  <!-- Fees & timeline -->
+  <!-- Fee schedule -->
   <section id="fees">
     <div class="container">
       <div class="section-head">
-        <span class="kicker">Fees &amp; timeline</span>
+        <span class="kicker exhibit">Fee schedule</span>
         <h2>A flat fee, agreed before work begins.</h2>
-        <p>No success fee, no percentage of anything you raise or sell. You know the cost upfront, and it doesn't change if the transaction does.</p>
+        <p>No success fee, no percentage of anything you raise or sell. Three scopes, each priced upfront — the right one depends on the size of the business and how much is already in order.</p>
       </div>
 
-      <div class="fees-grid">
-        <div class="fee-point">
-          <span class="fee-figure">Flat fee</span>
-          <p>Fixed and agreed in advance, based on the scope we set together — never tied to the outcome of your transaction.</p>
+      <div class="fees-table">
+        <div class="fee-row">
+          <span class="fee-tag">Tier 1</span>
+          <div>
+            <div class="fee-name">Diagnostic</div>
+            <p class="fee-desc">A focused review for smaller or simpler businesses: where the story and the numbers already agree, where they don't yet, and what to do about it.</p>
+          </div>
+          <div>
+            <span class="fee-amount">£1,950</span>
+            <span class="fee-timeline">1–2 weeks</span>
+          </div>
         </div>
-        <div class="fee-point">
-          <span class="fee-figure">2–4 weeks</span>
-          <p>A typical engagement, from an initial conversation to a management team that feels properly prepared.</p>
+
+        <div class="fee-row recommended">
+          <span class="fee-tag">Tier 2 — most founders start here</span>
+          <div>
+            <div class="fee-name">Full preparation</div>
+            <p class="fee-desc">The diagnostic plus a complete evidence-ready financial pack, a tailored information request list and a working Q&amp;A pack for likely questions.</p>
+          </div>
+          <div>
+            <span class="fee-amount">£3,450</span>
+            <span class="fee-timeline">2–3 weeks</span>
+          </div>
         </div>
-        <div class="fee-point">
-          <span class="fee-figure">Indicative range</span>
-          <p>Most engagements fall between roughly £1,500 and £4,000, depending on scope — confirmed as a fixed quote after we've spoken.</p>
+
+        <div class="fee-row">
+          <span class="fee-tag">Tier 3</span>
+          <div>
+            <div class="fee-name">Complete transaction support</div>
+            <p class="fee-desc">Everything above, plus a data-room build, the question database for your team to complete, and support through the process as questions come in.</p>
+          </div>
+          <div>
+            <span class="fee-amount">£5,250</span>
+            <span class="fee-timeline">3–4 weeks</span>
+          </div>
         </div>
       </div>
 
-      <p class="fees-detail">Every business and every transaction is different, so scope and fee are set after an initial conversation about what's already available and what the situation needs — not before. There's no obligation attached to that first conversation.</p>
+      <div class="fees-principles">
+        <div class="fees-principle">
+          <span class="fee-figure">Flat, not contingent</span>
+          <p>Fixed and agreed in advance for the tier and scope we choose together — never tied to whether the transaction completes.</p>
+        </div>
+        <div class="fees-principle">
+          <span class="fee-figure">Set after we talk</span>
+          <p>The tier above is a starting point. A short initial call, at no cost, confirms scope and the final figure before anything is signed.</p>
+        </div>
+        <div class="fees-principle">
+          <span class="fee-figure">One engagement at a time</span>
+          <p>I take on a small number of businesses at once, so each one gets proper attention rather than being queued behind the next.</p>
+        </div>
+      </div>
+
+      <p class="fees-detail">Figures above are current guide prices for 2026 and may be revisited as scopes are refined — the amount confirmed on your engagement letter is the amount you pay, regardless of how the transaction ends.</p>
     </div>
   </section>
 
   <!-- Beyond the numbers -->
-  <section class="section-sage">
+  <section class="section-white">
     <div class="container">
       <div class="section-head">
-        <span class="kicker">Beyond the numbers</span>
+        <span class="kicker exhibit">Beyond the numbers</span>
         <h2>Show what is working. Explain what needs context.</h2>
         <p>Good preparation captures both sides honestly: the commercial strengths that deserve to stand out, and the matters a funder or buyer will reasonably want to understand.</p>
       </div>
@@ -361,31 +402,31 @@
   </section>
 
   <!-- Process -->
-  <section id="approach">
+  <section id="approach" class="section-band">
     <div class="container">
       <div class="section-head">
-        <span class="kicker">Approach</span>
+        <span class="kicker exhibit">Approach</span>
         <h2>Commercially minded. Financially grounded. Founder-aligned.</h2>
       </div>
 
       <div class="process-list">
         <div class="process-step">
-          <span class="step-number" aria-hidden="true">01</span>
+          <span class="step-tag">First</span>
           <h3>Understand the business</h3>
           <p>How the business creates value, what makes it distinctive, and what the financing or transaction needs to achieve.</p>
         </div>
         <div class="process-step">
-          <span class="step-number" aria-hidden="true">02</span>
+          <span class="step-tag">Then</span>
           <h3>Bring the strengths into focus</h3>
           <p>Connect management accounts, KPIs, customers, operations and forecasts so the strongest parts of the story are clear and consistent.</p>
         </div>
         <div class="process-step">
-          <span class="step-number" aria-hidden="true">03</span>
+          <span class="step-tag">Then</span>
           <h3>Explain and support</h3>
           <p>Reconcile the story to the evidence and prepare clear explanations for anything that needs context or further support.</p>
         </div>
         <div class="process-step">
-          <span class="step-number" aria-hidden="true">04</span>
+          <span class="step-tag">Finally</span>
           <h3>Prepare the team</h3>
           <p>Organise the materials and rehearse honest, confident responses to the questions most likely to come up.</p>
         </div>
@@ -396,10 +437,10 @@
   </section>
 
   <!-- About -->
-  <section id="about" class="section-ivory">
+  <section id="about">
     <div class="container">
       <div class="section-head">
-        <span class="kicker">About Jamie</span>
+        <span class="kicker exhibit">About Jamie</span>
         <h2>Financial diligence experience, with a founder's commercial perspective.</h2>
       </div>
 
